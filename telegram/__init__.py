@@ -1,3 +1,3 @@
-from client import *
-from message import *
-from user import *
+from .client import *
+from .message import *
+from .user import *
