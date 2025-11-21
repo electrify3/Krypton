@@ -18,8 +18,11 @@ class HTTPClient:
 
         await self._ensure_session()
         
-        async with self._session.get(url, params=kwargs) as response:
-            return await response.json()
+        try:
+            async with self._session.get(url, params=kwargs) as response:
+                return await response.json()
+        except Exception as e:
+            print(f'HTTP GET Error: {e}')
     
 
     async def post(self, method: str, *args, **kwargs) -> dict:
@@ -27,8 +30,11 @@ class HTTPClient:
 
         await self._ensure_session()
         
-        async with self._session.post(url, json=kwargs) as response:
-            return await response.json()
+        try:
+            async with self._session.post(url, json=kwargs) as response:
+                return await response.json()
+        except Exception as e:
+            print(f'HTTP POST Error: {e}')
 
     async def close(self):
         if self._session:

@@ -24,4 +24,7 @@ class EventManager:
 
     async def dispatch(self, name: str, *args, **kwargs) -> None:
         for func in self._listeners.get(name, []):
-            await func(*args, **kwargs)
+            try:
+                await func(*args, **kwargs)
+            except Exception as e:
+                print(f"Error in event handler {func.__name__}: {e}")
