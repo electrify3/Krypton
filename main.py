@@ -20,7 +20,7 @@ async def on_message(message: telegram.Message):
 
     for triggers in replies:
         if text in triggers:
-            msg = await message.channel.send(replies[triggers])
+            msg = await message.reply(replies[triggers])
             print(msg)
     
 

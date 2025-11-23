@@ -25,5 +25,12 @@ class Message:
     def author(self) -> User:
         return User(self._client, self._author)
     
+    async def reply(self, text: str, *args, **kwargs) -> Message:
+        reply_para = {
+            'message_id': self.id
+        }
+        return await self._client.send(self.channel.id, text=text, reply_parameters=reply_para, *args, **kwargs)
+
+    
     def __str__(self):
         return f'{self.author.username}: {self.text}'
