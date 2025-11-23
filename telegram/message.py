@@ -1,10 +1,29 @@
+from typing import TYPE_CHECKING
+
 from .user import User
+from .channel import Channel
+
+if TYPE_CHECKING:
+    from .client import Client
 
 class Message:
-    def __init__(self, data: dict):
-        self.id: int = data["message_id"]
-        self.text: str = data.get("text")
-        self.date = data.get("date")
+    def __init__(self, client: Client, message_json: dict):
+        self._client = client
 
-        self.author = User(data["from"])
-        self.chat_id: int = data["chat"]["id"]
+        self.id: int = message_json["message_id"]
+        self.text: str = message_json.get("text")
+        self.date = message_json.get("date")
+
+        self._author = message_json["from"]
+        self._chat: dict = message_json["chat"]
+    
+    @property
+    def channel(self) -> Channel:
+        return Channel(self._client, self._chat)
+    
+    @property
+    def author(self) -> User:
+        return User(self._client, self._author)
+    
+    def __str__(self):
+        return f'{self.author.username}: {self.text}'
